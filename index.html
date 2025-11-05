@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revisão</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos Gerais */
+        :root {
+            --primary-dark: #1a0b2e;
+            --primary-medium: #2d1b69;
+            --primary-light: #6c4bb9;
+            --accent-blue: #4f6df5;
+            --accent-purple: #a78bfa;
+            --text-light: #e2e8f0;
+            --text-dark: #0f172a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --git-orange: #f05033;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-medium));
+            color: var(--text-light);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Cabeçalho e Navegação */
+        header {
+            background: rgba(26, 11, 46, 0.95);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(108, 75, 185, 0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            font-weight: bold;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+
+        .logo i {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1rem;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-purple);
+            background: rgba(108, 75, 185, 0.1);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue));
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .menu-toggle span {
+            height: 3px;
+            width: 25px;
+            background: var(--accent-purple);
+            margin-bottom: 4px;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        /* Seções */
+        section {
+            padding: clamp(2rem, 8vw, 5rem) 0;
+            position: relative;
+        }
+
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 20%, rgba(108, 75, 185, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(79, 109, 245, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+        }
+
+        h1 {
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: clamp(1.5rem, 6vw, 2.5rem);
+            text-align: center;
+            margin-bottom: clamp(1.5rem, 6vw, 3rem);
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: clamp(60px, 20vw, 100px);
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue));
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            margin-bottom: 1rem;
+        }
+
+        /* Página Inicial */
+        .hero {
+            text-align: center;
+            padding: clamp(4rem, 15vw, 8rem) 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(108, 75, 185, 0.2) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(79, 109, 245, 0.2) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            max-width: min(800px, 90%);
+            margin: 0 auto clamp(1.5rem, 6vw, 3rem);
+            color: var(--text-light);
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue));
+            color: white;
+            padding: clamp(0.8rem, 3vw, 1rem) clamp(1.5rem, 4vw, 2rem);
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(108, 75, 185, 0.4);
+            position: relative;
+            overflow: hidden;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            white-space: nowrap;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(108, 75, 185, 0.6);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        /* Simulador de Orçamento */
+        .budget-calculator {
+            background: rgba(26, 11, 46, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(108, 75, 185, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .budget-calculator::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue));
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--accent-purple);
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+
+        input, select {
+            width: 100%;
+            padding: clamp(0.8rem, 2vw, 1rem);
+            border: 1px solid rgba(108, 75, 185, 0.3);
+            border-radius: 10px;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            transition: all 0.3s;
+            background: rgba(26, 11, 46, 0.5);
+            color: var(--text-light);
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent-blue);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(79, 109, 245, 0.3);
+        }
+
+        button {
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue));
+            color: white;
+            border: none;
+            padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(108, 75, 185, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 auto;
+            white-space: nowrap;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(108, 75, 185, 0.6);
+        }
+
+        .result {
+            margin-top: 2rem;
+            padding: clamp(1rem, 3vw, 2rem);
+            border-radius: 15px;
+            background: rgba(26, 11, 46, 0.7);
+            display: none;
+            border-left: 5px solid;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .positive {
+            border-left-color: var(--success);
+        }
+
+        .negative {
+            border-left-color: var(--danger);
+        }
+
+        /* Dicas de Consumo */
+        .tips-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+            gap: clamp(1rem, 3vw, 2rem);
+        }
+
+        .tip-card {
+            background: rgba(26, 11, 46, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: clamp(1.5rem, 3vw, 2rem);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            text-align: center;
+            border: 1px solid rgba(108, 75, 185, 0.2);
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .tip-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue));
+        }
+
+        .tip-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .tip-icon {
+            font-size: clamp(2rem, 6vw, 3rem);
+            margin-bottom: clamp(1rem, 3vw, 1.5rem);
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .tip-card h3 {
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            margin-bottom: 1rem;
+        }
+
+        .tip-card p {
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            line-height: 1.5;
+        }
+
+        /* Infográficos */
+        .infographic-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
+            gap: clamp(1.5rem, 4vw, 2.5rem);
+        }
+
+        .infographic {
+            background: rgba(26, 11, 46, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: clamp(1.5rem, 3vw, 2rem);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(108, 75, 185, 0.2);
+            position: relative;
+        }
+
+        .infographic::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue));
+        }
+
+        .chart {
+            height: clamp(180px, 40vw, 250px);
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            margin: clamp(1rem, 3vw, 2rem) 0;
+            padding: 0 clamp(0.5rem, 2vw, 1rem);
+            gap: clamp(5px, 2vw, 10px);
+        }
+
+        .bar {
+            flex: 1;
+            max-width: 60px;
+            min-width: 30px;
+            background: linear-gradient(to top, var(--accent-purple), var(--accent-blue));
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            transition: transform 0.3s;
+        }
+
+        .bar:hover {
+            transform: scale(1.05);
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            font-weight: bold;
+            color: var(--accent-purple);
+            text-align: center;
+            width: 100%;
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            font-size: clamp(0.6rem, 1.8vw, 0.8rem);
+            text-align: center;
+            width: 100%;
+            color: var(--text-light);
+            word-wrap: break-word;
+        }
+
+        .infographic p {
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        /* Glossário */
+        .glossary-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+            gap: clamp(1rem, 3vw, 1.5rem);
+        }
+
+        .term-card {
+            background: rgba(26, 11, 46, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: clamp(1rem, 3vw, 1.5rem);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            border: 1px solid rgba(108, 75, 185, 0.2);
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .term-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-purple), var(--accent-blue));
+        }
+
+        .term-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .term {
+            font-weight: bold;
+            color: var(--accent-purple);
+            margin-bottom: 0.5rem;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+        }
+
+        .definition {
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            line-height: 1.5;
+        }
+
+        /* Seção Git */
+        .git-tutorial {
+            background: rgba(26, 11, 46, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(108, 75, 185, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .git-tutorial::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--git-orange), #f05033);
+        }
+
+        .git-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .git-logo {
+            font-size: 4rem;
+            color: var(--git-orange);
+            margin-bottom: 1rem;
+        }
+
+        .git-download {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(240, 80, 51, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid var(--git-orange);
+        }
+
+        .git-download a {
+            color: var(--git-orange);
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        .git-download a:hover {
+            text-decoration: underline;
+        }
+
+        .command-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .command-category {
+            background: rgba(26, 11, 46, 0.5);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(108, 75, 185, 0.2);
+        }
+
+        .command-category h3 {
+            color: var(--git-orange);
+            border-bottom: 2px solid var(--git-orange);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .command-item {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(26, 11, 46, 0.3);
+            border-radius: 8px;
+            border-left: 3px solid var(--git-orange);
+        }
+
+        .command {
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            margin: 0.5rem 0;
+            color: var(--accent-purple);
+            font-weight: bold;
+        }
+
+        .command-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            opacity: 0.9;
+        }
+
+        /* Comparação de Plataformas */
+        .platform-comparison {
+            background: rgba(26, 11, 46, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(108, 75, 185, 0.2);
+        }
+
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .platform-card {
+            background: rgba(26, 11, 46, 0.5);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(108, 75, 185, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .platform-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .platform-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .platform-icon {
+            font-size: 2.5rem;
+            margin-right: 1rem;
+            color: var(--accent-purple);
+        }
+
+        .platform-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .platform-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .platform-features li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .platform-features i {
+            margin-right: 0.5rem;
+            color: var(--accent-blue);
+        }
+
+        .rating {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+
+        .star {
+            color: var(--warning);
+            margin-right: 0.2rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+            background: rgba(26, 11, 46, 0.5);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(108, 75, 185, 0.2);
+        }
+
+        .comparison-table th {
+            background: rgba(108, 75, 185, 0.2);
+            font-weight: bold;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Rodapé */
+        footer {
+            background: rgba(26, 11, 46, 0.9);
+            color: var(--text-light);
+            text-align: center;
+            padding: clamp(2rem, 6vw, 3rem) 0;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(108, 75, 185, 0.3);
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+
+        /* Efeitos de partículas */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(108, 75, 185, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* ========== RESPONSIVIDADE ========== */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(26, 11, 46, 0.98);
+                backdrop-filter: blur(15px);
+                padding: 1rem 0;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+                gap: 0;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                margin: 0;
+                text-align: center;
+                width: 100%;
+            }
+            
+            .nav-links a {
+                display: block;
+                padding: 12px 20px;
+                width: 100%;
+                border-radius: 0;
+            }
+            
+            .menu-toggle {
+                display: flex;
+            }
+
+            .hero {
+                padding: 3rem 0;
+            }
+
+            section {
+                padding: 2.5rem 0;
+            }
+
+            .budget-calculator {
+                padding: 1.5rem;
+            }
+
+            .chart {
+                height: 200px;
+            }
+
+            .bar {
+                min-width: 25px;
+            }
+
+            .platform-grid,
+            .command-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-table {
+                font-size: 0.8rem;
+            }
+
+            .git-logo {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                width: 98%;
+                padding: 10px;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .logo i {
+                font-size: 1.3rem;
+            }
+
+            .hero {
+                padding: 2rem 0;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+
+            .budget-calculator {
+                padding: 1rem;
+                border-radius: 15px;
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            input, select {
+                padding: 0.7rem;
+            }
+
+            button {
+                padding: 0.8rem 1.2rem;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .tips-container,
+            .glossary-container {
+                grid-template-columns: 1fr;
+            }
+
+            .infographic-container {
+                grid-template-columns: 1fr;
+            }
+
+            .chart {
+                height: 150px;
+                gap: 3px;
+            }
+
+            .bar {
+                min-width: 20px;
+            }
+
+            .bar-value {
+                font-size: 0.6rem;
+                top: -20px;
+            }
+
+            .bar-label {
+                font-size: 0.5rem;
+                bottom: -20px;
+            }
+
+            .tip-card,
+            .term-card {
+                padding: 1.2rem;
+            }
+
+            footer {
+                padding: 1.5rem 0;
+            }
+
+            .git-logo {
+                font-size: 2.5rem;
+            }
+
+            .command-grid {
+                gap: 1rem;
+            }
+
+            .command-category {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-chart-line"></i>
+                    Revisão
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#inicio">Início</a></li>
+                    <li><a href="#simulador">Simulador</a></li>
+                    <li><a href="#dicas">Dicas</a></li>
+                    <li><a href="#infograficos">Infográficos</a></li>
+                    <li><a href="#glossario">Glossário</a></li>
+                    <li><a href="#git">Tutorial Git</a></li>
+                    <li><a href="#plataformas">Plataformas</a></li>
+                </ul>
+                <div class="menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section id="inicio" class="hero">
+        <div class="container">
+            <h1>Economia Doméstica e Finanças Pessoais</h1>
+            <p>Uma plataforma tecnológica que integra conhecimentos de Matemática, Geografia, Sociologia e Português para promover organização financeira, consumo consciente e pensamento crítico.</p>
+            <a href="#simulador" class="btn">
+                <i class="fas fa-rocket"></i> Comece Agora
+            </a>
+        </div>
+    </section>
+
+    <section id="simulador">
+        <div class="container">
+            <h2>Simulador de Orçamento Mensal</h2>
+            <div class="budget-calculator">
+                <form id="budget-form">
+                    <div class="form-group">
+                        <label for="renda"><i class="fas fa-money-bill-wave"></i> Renda Mensal (R$)</label>
+                        <input type="number" id="renda" required min="0" step="0.01" placeholder="Ex: 3500.00">
+                    </div>
+                    
+                    <h3><i class="fas fa-home"></i> Despesas Fixas</h3>
+                    <div class="form-group">
+                        <label for="moradia">Moradia (aluguel, condomínio, IPTU)</label>
+                        <input type="number" id="moradia" value="0" min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="transporte">Transporte (combustível, passagem, manutenção)</label>
+                        <input type="number" id="transporte" value="0" min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="alimentacao">Alimentação</label>
+                        <input type="number" id="alimentacao" value="0" min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="educacao">Educação (mensalidade, material)</label>
+                        <input type="number" id="educacao" value="0" min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="saude">Saúde (plano, medicamentos)</label>
+                        <input type="number" id="saude" value="0" min="0" step="0.01">
+                    </div>
+                    
+                    <h3><i class="fas fa-shopping-cart"></i> Despesas Variáveis</h3>
+                    <div class="form-group">
+                        <label for="lazer">Lazer (cinema, restaurante, viagens)</label>
+                        <input type="number" id="lazer" value="0" min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="vestuario">Vestuário</label>
+                        <input type="number" id="vestuario" value="0" min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="outros">Outras Despesas</label>
+                        <input type="number" id="outros" value="0" min="0" step="0.01">
+                    </div>
+                    
+                    <button type="submit">
+                        <i class="fas fa-calculator"></i> Calcular Orçamento
+                    </button>
+                </form>
+                
+                <div id="resultado" class="result"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="dicas">
+        <div class="container">
+            <h2>Dicas de Consumo Consciente</h2>
+            <div class="tips-container">
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-chart-pie"></i></div>
+                    <h3>Planejamento Financeiro</h3>
+                    <p>Estabeleça metas financeiras de curto, médio e longo prazo. Crie um orçamento mensal e acompanhe seus gastos regularmente.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-shopping-basket"></i></div>
+                    <h3>Compras Inteligentes</h3>
+                    <p>Pesquise preços, compare produtos e evite compras por impulso. Priorize a qualidade e durabilidade dos produtos.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>Redução de Desperdício</h3>
+                    <p>Adote hábitos que reduzam o consumo de energia e água. Planeje suas refeições para evitar desperdício de alimentos.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                    <h3>Controle de Gastos</h3>
+                    <p>Utilize aplicativos ou planilhas para registrar todas as suas despesas. Identifique categorias onde pode economizar.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-leaf"></i></div>
+                    <h3>Consumo Sustentável</h3>
+                    <p>Prefira produtos com menor impacto ambiental. Considere a economia circular: reparar, reutilizar e reciclar.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <h3>Educação Financeira</h3>
+                    <p>Invista em seu conhecimento sobre finanças. Leia livros, participe de cursos e acompanhe notícias econômicas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="infograficos">
+        <div class="container">
+            <h2>Infográficos com Dados Econômicos</h2>
+            <div class="infographic-container">
+                <div class="infographic">
+                    <h3>Distribuição de Gastos da Família Brasileira</h3>
+                    <div class="chart">
+                        <div class="bar" style="height: 70%;">
+                            <span class="bar-value">70%</span>
+                            <span class="bar-label">Moradia</span>
+                        </div>
+                        <div class="bar" style="height: 50%;">
+                            <span class="bar-value">50%</span>
+                            <span class="bar-label">Transporte</span>
+                        </div>
+                        <div class="bar" style="height: 60%;">
+                            <span class="bar-value">60%</span>
+                            <span class="bar-label">Alimentação</span>
+                        </div>
+                        <div class="bar" style="height: 30%;">
+                            <span class="bar-value">30%</span>
+                            <span class="bar-label">Saúde</span>
+                        </div>
+                        <div class="bar" style="height: 25%;">
+                            <span class="bar-value">25%</span>
+                            <span class="bar-label">Educação</span>
+                        </div>
+                        <div class="bar" style="height: 20%;">
+                            <span class="bar-value">20%</span>
+                            <span class="bar-label">Lazer</span>
+                        </div>
+                    </div>
+                    <p>Fonte: Dados fictícios baseados em padrões de consumo</p>
+                </div>
+                
+                <div class="infographic">
+                    <h3>Desigualdade Regional de Renda no Brasil</h3>
+                    <div class="chart">
+                        <div class="bar" style="height: 90%;">
+                            <span class="bar-value">90%</span>
+                            <span class="bar-label">Sudeste</span>
+                        </div>
+                        <div class="bar" style="height: 70%;">
+                            <span class="bar-value">70%</span>
+                            <span class="bar-label">Sul</span>
+                        </div>
+                        <div class="bar" style="height: 50%;">
+                            <span class="bar-value">50%</span>
+                            <span class="bar-label">Centro-Oeste</span>
+                        </div>
+                        <div class="bar" style="height: 40%;">
+                            <span class="bar-value">40%</span>
+                            <span class="bar-label">Nordeste</span>
+                        </div>
+                        <div class="bar" style="height: 30%;">
+                            <span class="bar-value">30%</span>
+                            <span class="bar-label">Norte</span>
+                        </div>
+                    </div>
+                    <p>Fonte: Dados fictícios para fins educacionais</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="glossario">
+        <div class="container">
+            <h2>Glossário de Termos Financeiros</h2>
+            <div class="glossary-container">
+                <div class="term-card">
+                    <div class="term">Orçamento</div>
+                    <div class="definition">Planejamento financeiro que estima receitas e despesas por um período determinado.</div>
+                </div>
+                <div class="term-card">
+                    <div class="term">Renda</div>
+                    <div class="definition">Total de recursos financeiros recebidos por uma pessoa ou família em determinado período.</div>
+                </div>
+                <div class="term-card">
+                    <div class="term">Despesa Fixa</div>
+                    <div class="definition">Gastos que se repetem mensalmente com valores relativamente constantes.</div>
+                </div>
+                <div class="term-card">
+                    <div class="term">Despesa Variável</div>
+                    <div class="definition">Gastos que variam de valor conforme o consumo ou necessidades mensais.</div>
+                </div>
+                <div class="term-card">
+                    <div class="term">Poupança</div>
+                    <div class="definition">Parte da renda que não é gasta e é reservada para necessidades futuras.</div>
+                </div>
+                <div class="term-card">
+                    <div class="term">Investimento</div>
+                    <div class="definition">Aplicação de recursos financeiros com expectativa de ganhos no futuro.</div>
+                </div>
+                <div class="term-card">
+                    <div class="term">Juros</div>
+                    <div class="definition">Remuneração cobrada pelo empréstimo de dinheiro ou rendimento de aplicações financeiras.</div>
+                </div>
+                <div class="term-card">
+                    <div class="term">Inflação</div>
+                    <div class="definition">Aumento generalizado e contínuo dos preços de bens e serviços na economia.</div>
+                </div>
+                <div class="term-card">
+                    <div class="term">Consumo Consciente</div>
+                    <div class="definition">Prática de consumir de forma responsável, considerando impactos sociais e ambientais.</div>
+                </div>
+                <div class="term-card">
+                    <div class="term">Endividamento</div>
+                    <div class="definition">Situação em que uma pessoa ou família possui dívidas a pagar.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="git">
+        <div class="container">
+            <h2>Tutorial Git</h2>
+            <div class="git-tutorial">
+                <div class="git-header">
+                    <div class="git-logo">
+                        <i class="fab fa-git-alt"></i>
+                    </div>
+                    <h3>Controle de Versão com Git</h3>
+                </div>
+
+                <div class="git-download">
+                    <p><strong>Para baixar o Git entre no link:</strong></p>
+                    <a href="https://git-scm.com/downloads" target="_blank">
+                        <i class="fas fa-download"></i> https://git-scm.com/downloads
+                    </a>
+                </div>
+
+                <h3>Configuração Inicial</h3>
+                <p>Após a instalação, sempre configurar as credenciais do Git:</p>
+                
+                <div class="command-grid">
+                    <div class="command-category">
+                        <h3><i class="fas fa-cog"></i> Configuração</h3>
+                        <div class="command-item">
+                            <div class="command">git config --global user.name "Seu nome"</div>
+                            <div class="command-desc">Configura seu nome de usuário</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command">git config --global user.email seu@email</div>
+                            <div class="command-desc">Configura seu email</div>
+                        </div>
+                    </div>
+
+                    <div class="command-category">
+                        <h3><i class="fas fa-folder-open"></i> Comandos Básicos</h3>
+                        <div class="command-item">
+                            <div class="command">git init</div>
+                            <div class="command-desc">Inicializar uma pasta com o git</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command">git add nome_do_arquivo</div>
+                            <div class="command-desc">Adicionar arquivos para gerar uma versão</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command">git commit -m "Mensagem"</div>
+                            <div class="command-desc">Gerar uma versão com mensagem descritiva</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command">git status</div>
+                            <div class="command-desc">Verificar arquivos que foram alterados</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command">git log</div>
+                            <div class="command-desc">Verificar o log das modificações</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 3rem;">Comandos Básicos do Linux/Unix</h3>
+                <div class="command-grid">
+                    <div class="command-category">
+                        <h3><i class="fas fa-terminal"></i> Navegação e Arquivos</h3>
+                        <div class="command-item">
+                            <div class="command">cd nome_da_pasta</div>
+                            <div class="command-desc">Entrar em uma pasta</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command">ls nome_da_pasta</div>
+                            <div class="command-desc">Listar o conteúdo de uma pasta</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command">mkdir nome_da_pasta</div>
+                            <div class="command-desc">Criar uma pasta</div>
+                        </div>
+                    </div>
+
+                    <div class="command-category">
+                        <h3><i class="fas fa-file"></i> Manipulação de Arquivos</h3>
+                        <div class="command-item">
+                            <div class="command">rm -r nome_da_pasta</div>
+                            <div class="command-desc">Excluir uma pasta e seu conteúdo</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command">mv nome_atual nome_novo</div>
+                            <div class="command-desc">Renomear um arquivo</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command">mv arquivo pasta/</div>
+                            <div class="command-desc">Mover um arquivo de lugar</div>
+                        </div>
+                        <div class="command-item">
+                            <div class="command">cp arquivo destino/</div>
+                            <div class="command-desc">Copiar um arquivo</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(240, 80, 51, 0.1); border-radius: 10px;">
+                    <h4><i class="fas fa-lightbulb"></i> Dica Importante</h4>
+                    <p>O Git é essencial para o controle de versão de projetos. Sempre use commits descritivos e mantenha seu repositório organizado para facilitar o trabalho em equipe e o gerenciamento do projeto.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="plataformas">
+        <div class="container">
+            <h2>Comparação de Plataformas de Hospedagem</h2>
+            <div class="platform-comparison">
+                <h3>Tutorial de Hospedagem</h3>
+                <p>Para hospedar seu site estático, siga estes passos básicos em cada plataforma:</p>
+                
+                <div class="platform-grid">
+                    <div class="platform-card">
+                        <div class="platform-header">
+                            <i class="platform-icon fab fa-vercel"></i>
+                            <div class="platform-name">Vercel</div>
+                        </div>
+                        <ul class="platform-features">
+                            <li><i class="fas fa-check"></i> Conecte com GitHub</li>
+                            <li><i class="fas fa-check"></i> Deploy automático</li>
+                            <li><i class="fas fa-check"></i> Domínio gratuito</li>
+                            <li><i class="fas fa-check"></i> SSL automático</li>
+                        </ul>
+                        <div class="rating">
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="platform-card">
+                        <div class="platform-header">
+                            <i class="platform-icon fab fa-netlify"></i>
+                            <div class="platform-name">Netlify</div>
+                        </div>
+                        <ul class="platform-features">
+                            <li><i class="fas fa-check"></i> Drag & Drop</li>
+                            <li><i class="fas fa-check"></i> Formulários</li>
+                            <li><i class="fas fa-check"></i> Funções serverless</li>
+                            <li><i class="fas fa-check"></i> CDN global</li>
+                        </ul>
+                        <div class="rating">
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star-half-alt star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="platform-card">
+                        <div class="platform-header">
+                            <i class="platform-icon fas fa-cloud"></i>
+                            <div class="platform-name">Render</div>
+                        </div>
+                        <ul class="platform-features">
+                            <li><i class="fas fa-check"></i> Deploy contínuo</li>
+                            <li><i class="fas fa-check"></i> SSL gratuito</li>
+                            <li><i class="fas fa-check"></i> Escalabilidade</li>
+                            <li><i class="fas fa-check"></i> Suporte técnico</li>
+                        </ul>
+                        <div class="rating">
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="fas fa-star star"></i>
+                            <i class="far fa-star star"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 style="margin-top: 3rem;">Análise Comparativa</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Característica</th>
+                            <th>Vercel</th>
+                            <th>Netlify</th>
+                            <th>Render</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Facilidade de publicação</td>
+                            <td>Excelente - Integração direta com GitHub</td>
+                            <td>Muito boa - Drag & Drop ou GitHub</td>
+                            <td>Boa - Configuração via GitHub</td>
+                        </tr>
+                        <tr>
+                            <td>Recursos gratuitos</td>
+                            <td>Domínio .vercel.app, deploy automático</td>
+                            <td>Domínio .netlify.app, formulários, funções</td>
+                            <td>Domínio próprio, SSL, deploy contínuo</td>
+                        </tr>
+                        <tr>
+                            <td>Usabilidade</td>
+                            <td>Interface intuitiva e moderna</td>
+                            <td>Interface amigável e completa</td>
+                            <td>Interface funcional mas menos polida</td>
+                        </tr>
+                        <tr>
+                            <td>Acessibilidade</td>
+                            <td>Excelente documentação e suporte</td>
+                            <td>Boa documentação e comunidade ativa</td>
+                            <td>Documentação adequada</td>
+                        </tr>
+                        <tr>
+                            <td>Performance</td>
+                            <td>Ótima - Edge Network global</td>
+                            <td>Excelente - CDN global</td>
+                            <td>Boa - Infraestrutura escalável</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(108, 75, 185, 0.1); border-radius: 10px;">
+                    <h4><i class="fas fa-lightbulb"></i> Recomendação</h4>
+                    <p>Para projetos educacionais como este, recomendamos o <strong>Vercel</strong> pela facilidade de uso e integração perfeita com GitHub. O deploy automático e a performance excelente tornam a experiência muito positiva para estudantes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>Finanças Tech - Projeto Educativo sobre Economia Doméstica e Finanças Pessoais</p>
+            <p>Integrando conhecimentos de Matemática, Geografia, Sociologia e Português</p>
+            <p>Desenvolvido com HTML, CSS e JavaScript puro</p>
+        </div>
+    </footer>
+
+    <script>
+        // Menu responsivo
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Fechar menu ao clicar em um link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('.nav-links').classList.remove('active');
+            });
+        });
+
+        // Simulador de Orçamento
+        document.getElementById('budget-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Obter valores dos campos
+            const renda = parseFloat(document.getElementById('renda').value);
+            const moradia = parseFloat(document.getElementById('moradia').value) || 0;
+            const transporte = parseFloat(document.getElementById('transporte').value) || 0;
+            const alimentacao = parseFloat(document.getElementById('alimentacao').value) || 0;
+            const educacao = parseFloat(document.getElementById('educacao').value) || 0;
+            const saude = parseFloat(document.getElementById('saude').value) || 0;
+            const lazer = parseFloat(document.getElementById('lazer').value) || 0;
+            const vestuario = parseFloat(document.getElementById('vestuario').value) || 0;
+            const outros = parseFloat(document.getElementById('outros').value) || 0;
+            
+            // Validar renda
+            if (!renda || renda <= 0) {
+                alert('Por favor, insira uma renda válida.');
+                return;
+            }
+            
+            // Calcular total de despesas
+            const totalDespesas = moradia + transporte + alimentacao + educacao + saude + lazer + vestuario + outros;
+            
+            // Calcular saldo
+            const saldo = renda - totalDespesas;
+            
+            // Calcular porcentagens
+            const porcentagemMoradia = (moradia / renda) * 100;
+            const porcentagemTransporte = (transporte / renda) * 100;
+            const porcentagemAlimentacao = (alimentacao / renda) * 100;
+            const porcentagemTotal = (totalDespesas / renda) * 100;
+            
+            // Exibir resultado
+            const resultado = document.getElementById('resultado');
+            resultado.style.display = 'block';
+            
+            let html = `<h3><i class="fas fa-chart-bar"></i> Resultado do Orçamento</h3>`;
+            html += `<p><strong>Renda Mensal:</strong> R$ ${renda.toFixed(2)}</p>`;
+            html += `<p><strong>Total de Despesas:</strong> R$ ${totalDespesas.toFixed(2)} (${porcentagemTotal.toFixed(1)}% da renda)</p>`;
+            html += `<p><strong>Saldo:</strong> R$ ${saldo.toFixed(2)}</p>`;
+            
+            // Análise das despesas
+            html += `<h4><i class="fas fa-search-dollar"></i> Análise das Despesas:</h4>`;
+            html += `<ul>`;
+            html += `<li>Moradia: ${porcentagemMoradia.toFixed(1)}% da renda (recomendado: até 30%)</li>`;
+            html += `<li>Transporte: ${porcentagemTransporte.toFixed(1)}% da renda (recomendado: até 15%)</li>`;
+            html += `<li>Alimentação: ${porcentagemAlimentacao.toFixed(1)}% da renda (recomendado: até 20%)</li>`;
+            html += `</ul>`;
+            
+            // Recomendações
+            html += `<h4><i class="fas fa-lightbulb"></i> Recomendações:</h4>`;
+            
+            if (saldo > 0) {
+                resultado.className = 'result positive';
+                html += `<p>Parabéns! Você está com saldo positivo. Considere:</p>`;
+                html += `<ul>`;
+                html += `<li>Destinar parte desse valor para poupança ou investimentos</li>`;
+                html += `<li>Criar uma reserva de emergência (equivalente a 3-6 meses de despesas)</li>`;
+                html += `<li>Investir em educação ou qualificação profissional</li>`;
+                html += `</ul>`;
+            } else {
+                resultado.className = 'result negative';
+                html += `<p>Atenção! Você está com saldo negativo. Considere:</p>`;
+                html += `<ul>`;
+                html += `<li>Revisar suas despesas e identificar onde pode economizar</li>`;
+                html += `<li>Reduzir gastos com lazer e vestuário temporariamente</li>`;
+                html += `<li>Buscar fontes alternativas de renda</li>`;
+                html += `</ul>`;
+            }
+            
+            resultado.innerHTML = html;
+            
+            // Rolar para o resultado
+            resultado.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+
+        // Criar partículas
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = window.innerWidth < 768 ? 15 : 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Tamanho aleatório baseado no tamanho da tela
+                const size = window.innerWidth < 480 ? 
+                    Math.random() * 5 + 3 : 
+                    Math.random() * 10 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Posição aleatória
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Atraso aleatório na animação
+                particle.style.animationDelay = `${Math.random() * 15}s`;
+                
+                // Duração da animação baseada no tamanho da tela
+                const duration = window.innerWidth < 768 ? 10 : 15;
+                particle.style.animationDuration = `${duration}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Inicializar partículas quando a página carregar
+        window.addEventListener('load', createParticles);
+    </script>
+</body>
+</html>
